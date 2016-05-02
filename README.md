@@ -21,14 +21,4 @@ And **performance** is also a reason of course .php files should be faster on lo
 
 ### What scalar types are supported for value?
 
-Actually it supports the following scalar types..
-
-* string
-* int
-* float
-* bool
-
-### Can I save a Array/Object to the config?
-
-Yes, because we use the [var_export](https://secure.php.net/manual/en/function.var-export.php) function it is possible to save Arrays and Data Objects._
-
+Actually it supports all scalar types supported by [var_export](https://secure.php.net/manual/en/function.var-export.php) which also includes arrays and objects.
