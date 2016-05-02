@@ -17,17 +17,24 @@ class Config
     static $dir = "configs";
 
     /**
+     * Function for checking the key is a valid one.
+     * @param string $key Key to be checked
+     * @return bool Is the key valid?
+     */
+    static function checkKey(string $key) : bool
+    {
+        if(mb_ereg_match("^[A-Za-z0-9_\.-]$", $key)) return true;
+        return false;
+    }
+
+    /**
      * Add/Set a configuration value.
      * @param string $key Filename
      * @param string $value Value saved to this file
      */
     static function set(string $key, string $value)
     {
-        function checkKey(string $k) : bool {
-            if(mb_ereg_match("^([A-z0-9\.-_]*)$", $k)) return true;
-            return false;
-        }
-        if(!checkKey($key)) throw new InvalidArgumentException("Key may be a valid filename.");
+        if(!self::checkKey($key)) throw new InvalidArgumentException("Key may be a valid filename.");
 
         function putValue($data, $handle) : bool {
 
@@ -43,7 +50,8 @@ class Config
         $file = Config::$dir . "/$key.php";
         $hand = fopen($file, "w");
         fwrite($hand, "<?php\n");
-        putValue($value, $hand);
+        if(!putValue($value, $hand))
+            throw new Exception("Configuration value could not be saved.");
         fclose($hand);
     }
 
@@ -54,11 +62,7 @@ class Config
      */
     static function get(string $key)
     {
-        function checkKey(string $k) : bool {
-            if(mb_ereg_match("^([A-z0-9\.-_\s]*)$", $k)) return true;
-            return false;
-        }
-        if(!checkKey($key)) throw new InvalidArgumentException("Key may be a valid filename.");
+        if(!self::checkKey($key)) throw new InvalidArgumentException("Key may be a valid filename.");
 
         $value = null;
 
@@ -76,12 +80,7 @@ class Config
      */
     static function remove(string $key) : bool
     {
-        function checkKey(string $k) : bool {
-            if(mb_ereg_match("^([A-z0-9\.-_\s]*)$", $k)) return true;
-            return false;
-        }
-
-        if(!checkKey($key)) throw new InvalidArgumentException("Key may be a valid filename.");
+        if(!self::checkKey($key)) throw new InvalidArgumentException("Key may be a valid filename.");
 
         $file = Config::$dir . "/$key.php";
         if(is_file($file)) {
