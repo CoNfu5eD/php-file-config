@@ -30,6 +30,5 @@ Actually it supports the following scalar types..
 
 ### Can I save a Array/Object to the config?
 
-Actually it is not possible to save arrays or objects with this class, but array support will be added soon.
-Objects are also planned but it isn´t clear when they will be added.
+Yes, because we use the [var_export](https://secure.php.net/manual/en/function.var-export.php) function it is possible to save Arrays and Data Objects._
 

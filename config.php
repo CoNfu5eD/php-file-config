@@ -27,30 +27,23 @@ class Config
             if(mb_ereg_match("^([A-z0-9\.-_]*)$", $k)) return true;
             return false;
         }
-
-        function prepareValue(string $d) : string {
-            return '"'.mb_ereg_replace("/(((([\\]{2})+([\\]{1}))?)\")/", "$2\\\"", $d).'"';
-        }
-        function prepareValue(int $d) : string {
-            return "$d";
-        }
-        function prepareValue(float $d) : string {
-            return "$d";
-        }
-        function prepareValue(bool $d) : string {
-            return ($d ? 'true' : 'false');
-        }
-
         if(!checkKey($key)) throw new InvalidArgumentException("Key may be a valid filename.");
+
+        function putValue($data, $handle) : bool {
+
+            if($data === null) {
+                return true;
+            }
+
+            fwrite($handle, '$value = '.var_export($data, true).";\n");
+            return true;
+        }
+
 
         $file = Config::$dir . "/$key.php";
         $hand = fopen($file, "w");
         fwrite($hand, "<?php\n");
-        if($value == null) {
-            fwrite($hand, '$value = null;');
-        } else {
-            fwrite($hand, '$value = '.prepareValue($value).';');
-        }
+        putValue($value, $hand);
         fclose($hand);
     }
 
@@ -65,8 +58,8 @@ class Config
             if(mb_ereg_match("^([A-z0-9\.-_\s]*)$", $k)) return true;
             return false;
         }
-
         if(!checkKey($key)) throw new InvalidArgumentException("Key may be a valid filename.");
+
         $value = null;
 
         $file = Config::$dir . "/$key.php";
