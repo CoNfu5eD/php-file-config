@@ -59,7 +59,7 @@ class Config
      * @param string $key Filename
      * @return string Value to the given key
      */
-    static function get(string $key) : string
+    static function get(string $key)
     {
         function checkKey(string $k) : bool {
             if(mb_ereg_match("^([A-z0-9\.-_\s]*)$", $k)) return true;
