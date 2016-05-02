@@ -38,12 +38,18 @@ class Config
 
         function putValue($data, $handle) : bool {
 
+            // no need to save if value is null (default return value of get)
             if($data === null) {
                 return true;
             }
 
-            fwrite($handle, '$value = '.var_export($data, true).";\n");
-            return true;
+            // Try writing data to file.
+            try {
+                fwrite($handle, '$value = ' . var_export($data, true) . ";\n");
+                return true;
+            } catch (Throwable $e) {
+                return false;
+            }
         }
 
 
