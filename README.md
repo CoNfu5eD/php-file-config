@@ -1,4 +1,4 @@
-# php-file-config
+# php7-file-config
 A simple Utility Class for handling configurations as .php files (key to value) for **PHP7** working.
 
 
